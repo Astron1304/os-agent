@@ -6,7 +6,6 @@ from langchain_ollama import ChatOllama
 import os
 import shutil
 from datetime import datetime
-
 LOG_FILE = "latest.log"
 LOGS_DIR = "logs"
 LOG_SAVE_STATE = ""
