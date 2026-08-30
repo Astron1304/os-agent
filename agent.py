@@ -1,6 +1,5 @@
 from log_config import logger
 
-
 def chunk_answer(prompt, agent, agent_config):
     logger.info("Агент начал формировать ответ в режиме чанков")
     try:
