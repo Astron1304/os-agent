@@ -1,0 +1,8 @@
+{"model": "qwen3:8b",
+"provider": "ollama",
+"api_key": "",
+"temperature": 0,
+"agent_config":{"configurable": {"thread_id": "my-conversation-1"}},
+"memory_file": "memory.sqlite",
+"o_format": "chunk",
+"preferred_dir": "любая"}

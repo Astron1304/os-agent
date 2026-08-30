@@ -1,1 +1,4 @@
-config.json
+memory.sqlite
+latest.log
+logs
+__pycache__
