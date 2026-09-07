@@ -39,5 +39,5 @@ def whole_answer(prompt, agent, agent_config):
         logger.debug(f"Полный ответ агента: {result['messages']}")
         return f"Агент: {result['messages'][-1].content}\n"
     except Exception as e:
-        logger.fatal(f"Фатальная ошибка ошибка в whole_answer: {e}")
+        logger.fatal(f"Фатальная ошибка в whole_answer: {e}")
         return "fatal"
