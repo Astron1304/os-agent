@@ -2,3 +2,4 @@ memory.sqlite
 latest.log
 logs
 __pycache__
+venv
