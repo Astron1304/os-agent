@@ -1,4 +1,5 @@
 memory.sqlite
+*.sqlite*
 latest.log
 logs
 __pycache__
