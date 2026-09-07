@@ -91,7 +91,6 @@ def create_directory(dir_path: str) -> str:
     """Создает новую пустую папку по указанному пути. Создает все промежуточные папки, если их нет."""
     logger.info(f"Инструмент create_directory начал работу. Путь: {dir_path}")
     try:
-        # resolve() делает путь абсолютным и нормализует его (убирает лишние слеши и точки)
         target_path = Path(dir_path).resolve()
         target_path.mkdir(parents=True, exist_ok=True)
         logger.info(f"Папка успешно создана: {target_path}")
@@ -102,7 +101,7 @@ def create_directory(dir_path: str) -> str:
 
 @tool
 def copy_files(src_path: str, dst_path: str, files: list) -> str:
-    """Копирует список файлов из одной директории в другую."""
+    """Копирует список файлов из одной директории в другую. Создаёт директорию назначения, если ее не было до этого."""
     logger.info(f"Инструмент copy_files начал работу. Источник: {src_path}, Назначение: {dst_path}")
     
     errs = 0
@@ -134,39 +133,6 @@ def copy_files(src_path: str, dst_path: str, files: list) -> str:
         return f"Файлы были скопированы из папки {src_path} в папку {dst_path}. Обнаружено ошибок: {errs}"
 
 
-@tool
-def move_files(src_path: str, dst_path: str, files: list) -> str:
-    """Перемещает список файлов из одной директории в другую."""
-    logger.info(f"Инструмент move_files начал работу. Источник: {src_path}, Назначение: {dst_path}")
-    
-    src = Path(src_path).resolve()
-    if src == Path.cwd().resolve():
-        logger.error("Попытка перемещения из рабочей директории заблокирована")
-        return "Невозможно переместить файлы из текущей рабочей директории агента"
-        
-    errs = 0
-    list_errs = {}
-    
-    try:
-        dst = (src / dst_path).resolve() if not Path(dst_path).is_absolute() else Path(dst_path).resolve()
-        dst.mkdir(parents=True, exist_ok=True)
-        
-        for f in files:
-            shutil.move(src=str(src / f), dst=str(dst / f))
-            
-    except Exception as e:
-        errs += 1
-        list_errs[f] = str(e)
-
-    if errs == 0:
-        logger.debug(f"Инструмент move_files завершил работу. {len(files)} файлов было перемещено из папки {src_path} в папку {dst_path}.")
-        return f"Файлы были перемещены из папки {src_path} в папку {dst_path}. Ошибок не обнаружено"
-    else:
-        err_details = ""
-        for obj in list_errs:
-            err_details += f"\n\t{str(Path(src_path)/obj)}: {list_errs[obj]}" 
-        logger.error(f"Инструмент move_files завершил работу. Ошибок при перемещении {len(files)} файлов: {errs}. Полный лог: {err_details}")
-        return f"Файлы были перемещены из папки {src_path} в папку {dst_path}. Обнаружено ошибок: {errs}"
 @tool
 def move_files(src_path: str, dst_path: str, files: list) -> str:
     """Перемещает список файлов из одной директории в другую. Создаёт директорию назначения, если ее не было до этого."""
