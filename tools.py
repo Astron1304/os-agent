@@ -57,6 +57,7 @@ def list_files(directory_path: str) -> str:
 
 @tool
 def search_in_files(directory_path: str, search_text: str) -> str:
+    text_formats = open("formats.txt", mode="r", encoding="UTF-8").read().split("\n")
     """Ищет текст во всех файлах в папке (рекурсивно)."""
     logger.info(f"Инструмент search_in_files начал работу в папке {directory_path}")
 
@@ -65,7 +66,7 @@ def search_in_files(directory_path: str, search_text: str) -> str:
     try:
         for root, files in os.walk(directory_path):
             for file in files:
-                if file.endswith(('.txt', '.py', '.md', '.json')):  # только текстовые файлы
+                if file.endswith(tuple(text_formats)):  # только текстовые файлы
                     file_path = os.path.join(root, file)
                     try:
                         with open(file_path, 'r', encoding='utf-8') as f:

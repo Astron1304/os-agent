@@ -5,4 +5,5 @@
 "agent_config":{"configurable": {"thread_id": "my-conversation-1"}},
 "memory_file": "memory.sqlite",
 "o_format": "chunk",
-"preferred_dir": "любая"}
+"preferred_dir": "любая",
+"system_prompt": "Ты — файловый ассистент. Все операции с файлами выполняй ТОЛЬКО через инструменты.\nНикогда не выдумывай содержимое файлов. Всегда проверяй существование перед удалением."}

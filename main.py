@@ -28,7 +28,7 @@ from tools import (
     write_file, 
     search_in_files, 
     list_files, 
-    create_directory, # <-- НОВЫЙ ИНСТРУМЕНТ
+    create_directory, 
     copy_files, 
     move_files, 
     delete_objects
@@ -41,10 +41,13 @@ logger.info(LOG_SAVE_STATE)
 logger.info("Сессия запущена")
 with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
-logger.info(f"Конфиг (без ключа): {json.dumps({k: v for k, v in config.items() if k != 'api_key'}, ensure_ascii=False, indent=2)}")
+
+logger.info(f"Конфиг: {json.dumps({k: v for k, v in config.items() if k != 'api_key'}, ensure_ascii=False, indent=2)}")
 model = config["model"]
 api_key = config["api_key"]
 provider = config["provider"]
+system_prompt = config["system_prompt"]
+
 if provider == "ollama":
     llm = ChatOllama(
         model=model, 
@@ -96,15 +99,16 @@ if config.get("o_format") == "chunk":
                 break
             else:
                 logger.info(f"Запрос пользователя: {prompt}")
-                ans=chunk_answer(prompt=prompt+system_info,agent=agent,agent_config=config["agent_config"])
+                ans=chunk_answer(prompt=prompt+system_info,system_prompt=system_prompt,agent=agent,agent_config=config["agent_config"])
                 system_info = ''
+
                 if ans=="fatal":
                     print("Фатальная ошибка! Смотрите лог")
                     break
         except KeyboardInterrupt:
             logger.info("Диалог завершен: Принудительный выход")
             print("\nПринудительный выход")
-            break
+            break      
 else:
     while True:
         try:    
